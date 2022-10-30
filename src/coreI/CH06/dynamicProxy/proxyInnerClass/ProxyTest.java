@@ -1,5 +1,4 @@
-package coreI.CH06.proxyInnerClass;
-
+package coreI.CH06.dynamicProxy.proxyInnerClass;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -9,11 +8,11 @@ import java.util.Random;
 
 /**
  * 使用代理机制主要用于解决以下三个问题
- *     1. 将方法调用路由到远程服务器
- *     2. 在运行的程序中将用户界面事件与动作关联起来
- *     3. 为了调试，跟踪方法调用：本次案例解决该问题⭐
+ * 1. 将方法调用路由到远程服务器
+ * 2. 在运行的程序中将用户界面事件与动作关联起来
+ * 3. 为了调试，跟踪方法调用：本次案例解决该问题⭐
  *
- *     使用匿名内部类实现函数式接口InvocationHandler接口
+ * 使用匿名内部类实现函数式接口InvocationHandler接口
  *
  * @author QingHappy
  */
@@ -29,6 +28,7 @@ public class ProxyTest {
 
             /**
              * 创建代理对象，需要使用Proxy类的newProxyInstance方法
+             * 
              * @param 参数1 类加载器 用于加载代理对象的字节码的用于指被代理对象的类加载器
              * @param 参数2 一个Class对象数组 用于让代理对象和被代理对象有相同的接口
              *            new Class[]{ 接口一.class，接口二.class}
@@ -36,27 +36,28 @@ public class ProxyTest {
              *
              */
             Object proxy = Proxy.newProxyInstance(
-                    ClassLoader.getSystemClassLoader(), //使用系统类加载器，此处代理的是Integer对象
-                    new Class[]{Comparable.class},      //代理对象和Integer对象都实现了Comparable接口
+                    ClassLoader.getSystemClassLoader(), // 使用系统类加载器，此处代理的是Integer对象
+                    new Class[] { Comparable.class }, // 代理对象和Integer对象都实现了Comparable接口
                     new InvocationHandler() {
                         /**
                          * 作用：执行被代理对象的任何接口方法都会经过该方法
                          * 方法参数的含义
+                         * 
                          * @param proxy  代理对象的引用
                          * @param method 当前执行的方法
                          * @param args   当前执行方法所需的参数
-                         * @return       和被代理对象方法有相同的返回值
+                         * @return 和被代理对象方法有相同的返回值
                          * @throws Throwable
                          */
                         @Override
                         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
-                            System.out.print(value+"." + method.getName() + "(");
+                            System.out.print(value + "." + method.getName() + "(");
 
                             /**
                              * 该if函数用于输出参数，在二分查找过程中，只用到了两个方法：
-                             *   1。 compareTo，有一个参数
-                             *   2。 toString，无参数
+                             * 1。 compareTo，有一个参数
+                             * 2。 toString，无参数
                              */
                             if (args != null) {
                                 for (int i = 0; i < args.length; i++) {
@@ -85,8 +86,6 @@ public class ProxyTest {
             System.out.println(elements[result]);
         }
 
-
     }
 
 }
-

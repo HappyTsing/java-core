@@ -1,4 +1,4 @@
-package coreI.CH06.proxyLmabda2;
+package coreI.CH06.dynamicProxy.proxyLmabda2;
 
 public interface Eat {
     /**
@@ -6,5 +6,5 @@ public interface Eat {
      * @param foodName 食物名称
      * @param amount   吃了多少
      */
-    void Eat(String foodName, int amount);
+    void eat(String foodName, int amount);
 }

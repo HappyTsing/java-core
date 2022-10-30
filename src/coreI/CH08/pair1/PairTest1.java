@@ -2,7 +2,7 @@ package coreI.CH08.pair1;
 
 public class PairTest1 {
     public static void main(String[] args) {
-        String[] words = {"marry", "had", "a", "little", "lamb"};
+        String[] words = { "marry", "had", "a", "little", "lamb" };
         Pair<String> mm = ArrayAlg.minmax(words);
         System.out.println("min=" +
                 mm.getFirst());
@@ -11,7 +11,8 @@ public class PairTest1 {
     }
 
 }
-class ArrayAlg{
+
+class ArrayAlg {
     public static Pair<String> minmax(String[] a) {
         if (a == null || a.length == 1) {
             return null;

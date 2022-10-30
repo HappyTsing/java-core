@@ -5,8 +5,10 @@ import java.time.LocalDate;
 import java.util.Date;
 
 /**
+ * {@code Calendar}中主要介绍:
  * Date类和LocalDate类的简要使用
  * 使用LocalDate类实现当月日历的输出
+ * 
  * @author QingHappy
  */
 public class Calendar {
@@ -27,46 +29,45 @@ public class Calendar {
          */
         int month = localDate.getMonthValue();
         int today = localDate.getDayOfMonth();
-        //获取本月的第一天的日期
-        //当前日期 - 已过去的天数（today - 1）
+        // 获取本月的第一天的日期
+        // 当前日期 - 已过去的天数（today - 1）
         localDate = localDate.minusDays(today - 1);
-        System.out.println("本月第一天："+localDate.toString());
+        System.out.println("本月第一天：" + localDate.toString());
 
-        //得到本月第一天是星期几，并将其转化为数字，比如周二=2
+        // 得到本月第一天是星期几，并将其转化为数字，比如周二=2
         DayOfWeek weekday = localDate.getDayOfWeek();
         int value = weekday.getValue();
-        System.out.println("本月第一天是："+weekday);
+        System.out.println("本月第一天是：" + weekday);
 
-        //打印日历首行
+        // 打印日历首行
         System.out.println(" Mon Tue Wed Thu Fri Sat Sun");
 
-        //根据本月第几天进行缩进
+        // 根据本月第几天进行缩进
         for (int i = 0; i < value; i++) {
             System.out.print("  ");
         }
 
         while (localDate.getMonthValue() == month) {
-            System.out.printf("%3d",localDate.getDayOfMonth());
+            System.out.printf("%3d", localDate.getDayOfMonth());
 
-            //当天则标*，否则不标
-            if(localDate.getDayOfMonth()==today) {
+            // 当天则标*，否则不标
+            if (localDate.getDayOfMonth() == today) {
                 System.out.print("*");
             } else {
                 System.out.print(" ");
             }
-            //天数+1
+            // 天数+1
             localDate = localDate.plusDays(1);
-            //周一换行
-            if(localDate.getDayOfWeek().getValue()==1) {
+            // 周一换行
+            if (localDate.getDayOfWeek().getValue() == 1) {
                 System.out.println();
             }
         }
 
-        //下一个月，换行
-        if(localDate.getDayOfWeek().getValue()!=1) {
+        // 下一个月，换行
+        if (localDate.getDayOfWeek().getValue() != 1) {
             System.out.println();
         }
 
     }
 }
-

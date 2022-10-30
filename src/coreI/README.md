@@ -23,8 +23,6 @@ java 中三种注释的使用
 三种循环：while dowhile for 的简单使用
 格式化输出 printf
 
-> 本章节还有很多代码没有实现，待续！
-
 ## CH04 对象与类
 
 ### Calendar.java
@@ -725,7 +723,10 @@ public void start(int interval,boolean beep) {
 
 **动态代理**，基于反射原理实现使用一个代理类完成全部的代理功能！
 
-详见：`CH06.proxy.TraceHandler.java`
+- `CH06.dynamicProxy`：动态代理的各种实现方法，如基础方法、内部类、lambda表达式
+- `CH06.dynamicVsStaticProxy`：静态代理的实现及其缺陷，以及从静态代理升级到动态代理。
+
+详见：`CH06.dynamicProxy.proxy.TraceHandler.java`
 
 1. 被代理对象作为参数`target`传入
 2. 通过`employee.getClass().getClassLoader()`获取`ClassLoader`对象
@@ -906,6 +907,16 @@ boolean replaceAll(List list, Object oldVal, Object newVal)
 
 不推荐，需要线程安全的集合类型时请考虑使用 JUC 包下的并发集合
 
+#### 四、示例
+
+一、`Collections.nCopies(n,var)`
+
+```java
+List<String> list3 = new ArrayList<String>(Collections.nCopies(2, "orange"));
+```
+
+是通过nCopies方法创建拥有2个“orange”值的List，提供给list3进行初始化。
+
 ### Arrays
 
 排序 : sort()
@@ -922,6 +933,251 @@ boolean replaceAll(List list, Object oldVal, Object newVal)
 
 复制: copyOf()
 
-[具体代码](https://gitee.com/SnailClimb/JavaGuide/blob/master/docs/java/basic/Arrays,CollectionsCommonMethods.md)
+#### 示例
 
+**一、`Arrays.asList()`**
 
+在LeetCode 15题解中出现的用法：`List<List<Integer>>`
+
+首先`List<Integer>`指的是存int类型数据的列表，`List<List<Integer>>`指的是存【int类型数据的列表】类型数据的列表
+
+如何为这种List添加元素？
+
+```java
+List<List<Integer>> outList = new ArrayList<>();
+
+int a=1,b=2,c=3;
+//用法一 先构造List，再res.add(List)
+List<Integer> list = new ArrayList<>();
+list.add(a);
+list.add(b);
+list.add(c);
+outList.add(list)
+
+//用法二 ans.add(Arrays.asList(元素1，元素2，...,元素n))
+outList.add(Arrays.asList(a,b,c));
+```
+
+**二、`Arrays.fill(数组名,val)`**
+
+使用val填充数组
+
+## 重要概念
+
+### equals 与 ==
+
+```java
+import java.util.*;
+public class test1 {
+    public static void main(String[] args) {
+        String a = "a"; // 放在常量池中
+        String b = "a"; // 从常量池中找
+        String c = new String("a"); // c为一个引用
+        System.out.println(a==b); //true
+        System.out.println(a.equals(b)); //true
+        System.out.println(c==a); //false
+        System.out.println(c.equals(a)); //true
+    }
+}
+```
+
+String类重写了equals方法，比较的是值是否相同，如果没有重写，那equals方法与==相同！
+
+```java
+// Object类中的原始equals方法
+public boolean equals(Object obj) {
+        return (this == obj);
+}
+```
+
+```java
+// String类中重写的equals方法
+public boolean equals(Object anObject) {
+        if (this == anObject) {
+            return true;
+        }
+        if (anObject instanceof String) {
+            String aString = (String)anObject;
+            if (coder() == aString.coder()) {
+                return isLatin1() ? StringLatin1.equals(value, aString.value)
+                                  : StringUTF16.equals(value, aString.value);
+            }
+        }
+        return false;
+}
+```
+
+### hashCode 与 equals
+
+> 以HashSet为例！
+
+1. 为什么要有hashCode？
+
+   当加入HashSet时，分为两步：
+
+   - 计算当前对象的hashcode，如果在原set中不存在相同hashcode的数据，则将该数据加入set，否则：
+   - 调用equals方法检查hashcode相等的对象是否真的相同。如果equals返回true，则不加入，否则说明这两个数据并不相同，那么加入set。
+
+   由此可知，hashcode相同时，equals未必相同！而equals返回true时，hashcode一定相同！
+
+   因此hashCode的作用主要是减少equals方法的调用次数，以此增加运行效率！
+
+2. 重写equals必须重写hashCode，为什么？
+
+   从上文可知，如果`a.equals(b) = true`，那么他们的hashCode也应该是相同的。如果不重写hashCode方法，那么即便equals返回true，那么hashcode也不相同，在加入HashSet时会重复加入！
+
+3. 为什么两个对象有相同的hashcode值，但他们不一定相同？
+
+   因为hashCode()使用的杂凑算法也许刚好会让多个对象返回相同的杂凑值。
+
+```java
+public class test1 {
+    public static void main(String[] args) {
+        Student s1 = new Student("lele");
+        Student s2 = new Student("lele");
+        System.out.println(s1 == s2); //false
+        System.out.println(s1.equals(s2)); //重写equals前：false，重写后：true
+        var set = new HashSet<Student>();
+        set2.add(s1);
+        set2.add(s2);
+        System.out.println(set); 
+        /*只重写equals：[Student{name=lele}, Student{name=lele}]
+          只重写hashCode：[Student{name=lele}, Student{name=lele}]
+		  同时重写equals、hashCode：[Student{name=lele}]
+		*/
+    }
+}
+class Student{
+    String name;
+    public Student(String name){
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "name=" + name +
+                '}';
+    }
+	
+    // idea自动生成的重写的equals和hashCode方法
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Objects.equals(name, student.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+}
+```
+
+如上可以获得，只有同时重写equals方法和hashCode方法，才能将两个属性相同的对象正确加入HashSet，原因是：
+
+- 加入HashSet先调用HashCode，如果HashCode相同：
+- 再调用equals，如果equals相同，才会判定为重复数据，不加入HashSet！
+- 一旦其中有一步（HashCode、equals）不同，就被认为是不同的数据，加入HashSet
+
+如上，便是为什么修改了equals一定要hashCode的原因！
+
+### 方法的签名：重载与重写
+
+方法名 + 参数类型 = 方法的签名
+
+注：返回类型不是方法的签名！
+
+主要用于重载，重写和重载的区别：
+
+- 重载：相同方法名的方法，根据输入不同的参数，做出不同的处理。发生在编译器！
+  - 返回值类型可变，参数列表一定要变。异常和访问修饰符都可以变。
+- 重写：重写发生在运行期，是子类对父类的允许访问的方法的实现过程进行重新编写：
+  - 返回值类型、方法名、参数列表必须相同，抛出的异常范围小于等于父类，访问修饰符范围大于等于父类
+  - 如果父类方法访问修饰符为private/final/static。则子类不能重写该方法，但是被static修饰的方法能够再次被声明。
+  - 构造方法无法被重写。
+
+### 成员变量和局部变量
+
+- 从语法形式上看，成员变量是属于类的，可以被`public/protected/private/static/final等`修饰符修饰；而局部变量是属于方法的，且只能被`final`修饰。
+- 从变量在内存中的存储方式看：如果成员变量是使用static修饰的，那么这个成员变量是属于类的，如果没有使用static修饰，这个成员变量是属于实例的。
+- 从变量在内存中的生存世家您看：成员变量是对象的一部分，随着对象的创建而存在，而局部变量随着方法的调用而存在，方法的结束而消失。
+- 成员变量如果没有被赋初始值，则会以类型的默认值而赋值（final例外，final修饰的成员变量必须显式赋值），而局部变量则不会自动赋值。
+
+### 接口和抽象类
+
+#### 接口
+
+1. 接口中的所有`方法`都自动是`public`方法、所有`字段`都是`public static final`
+2. 接口中绝对不会有实例字段，但可以提供多个**静态方法**（Java 8之后），还可以使用`default`修饰符提供**默认方法**！
+3. 不能使用`new`运算符实例化接口，但是可以声明接口的变量，该变量必须引用实现了该接口的类对象
+4. 每个类只能有一个超类，但却可以实现多个接口，这就是有了抽象类还引入接口的原因
+5. **超类优先**：超类提供了一个具体方法，接口的具有相同签名的默认方法会被忽略
+6. **覆盖解决冲突**：继承的两个接口提供了两个相同签名的默认方法，为了解决冲突，必须重写方法以覆盖解决冲突！
+
+```java
+public interface People {
+    int age = 18; // 为什么必须要赋值，因为默认是public static final,而final修饰的成员变量必须显式赋值！
+//    public static final int age = 18;
+    
+    // 默认方法
+    default String getName(){
+        return "HappyTsing";
+    }
+    // 静态方法
+    static int getAgeStatic(){
+        return age;
+    }
+}
+```
+
+#### 抽象类
+
+1. 有一个或多个抽象方法的类本身必然是抽象的
+2. 不含抽象方法，也可以将类声明为抽象类
+3. 抽象类不能实例化
+4. 可以使用抽象类的变量去引用具体子类的变量
+
+```java
+public abstract class Person {
+    public abstract String getDescription();
+    private String name;
+    public Person(String name) {
+        this.name = name;
+    }
+    public String getName() {
+        return name; 
+    }
+}
+```
+
+```java
+public class Student extends Person {
+    private String major;
+    public Student(String name, String major) {
+        super(name);
+        this.major = major;
+    }
+    @Override
+    public String getDescription() {
+        return "a student major in " +
+                major;
+    }
+
+}
+```
+
+```java
+var people = new Person[2];
+people[0] = new Employee("王乐卿", 50000, 2000, 03, 30);
+people[1] = new Student("宋雨童", "外国语学院");
+
+/**
+ * 由于抽象类不能实例化，因此变量P永远不会引用Person对象！而是引用诸如Student、Employee具体子类的对象！
+ */
+for (Person p : people) {
+    System.out.println(p.getName() + "," + p.getDescription());
+}
+```

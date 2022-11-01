@@ -850,11 +850,40 @@ RuntimeException：
 
 关键字：throws、throw
 
-原则：一个方法必须声明所有可能抛出的`检查型异常`，`非检查型异常`要么在你的控制之外（Error），要么是一开始就应该避免（RuntimeException）
+- throws: 用于声明检查型异常
+- throw: 用于抛出异常
+
+```java
+class MyAnimation{
+    public Image loadImages(String s) throws fileNotFoundException, EOFException {
+        if(error) {
+            throw new EOFException();
+        }
+    }
+}
+```
+
+原则：一个方法必须声明**所有**可能抛出的`检查型异常`，`非检查型异常`要么在你的控制之外（Error），要么是一开始就应该避免（RuntimeException）
 
 注意：子类抛出的异常必须比父类抛出的异常更特殊，父类不抛出异常，则子类也不能抛出异常
 
 例如：父类抛出 Exception，那么子类只能抛出诸如 IOException，而不能抛出 Throwable 类型的异常
+
+此外，可以自定义异常，往往只需要定义一个派生于 Exception 的类，或者派生于 Exception 的某个子类，如 IOException。
+
+习惯的做法是，自定义的异常类应该包含两个构造器：
+
+- 默认构造器
+- 包含详细描述信息的构造器
+
+```java
+class MyException extends IOException{
+    public MyException(){}
+    public MyException(String gripe){
+        super(gripe);
+    }
+}
+```
 
 **2. 捕获异常**
 
@@ -862,6 +891,42 @@ RuntimeException：
 
 注意：捕获异常会花费大量的时间，因此使用异常的基本规则是，只在异常情况下使用异常。
 
+- try/catch
+```java
+try{
+    // code
+}catch(ExceptionType1 e){
+    // handler for this type
+}catch(ExceptionType2 e){
+    // handler for this type
+}finally{
+    // finally execute code
+}
+```
+
+- try-with-Resources
+
+对于下述代码模式：
+
+```java
+// open a resouce
+try{
+    // work with resources    
+}finally{
+    // close the resources
+}
+```
+
+假设资源属于一个实现了 AutoCloseable 接口的类，Java 7 后可以使用更快捷的方式。
+
+AutoCloseable 接口有一个方法：`void close() throws Exception`
+
+```java
+try(Resource res = ...){
+    //work with res
+}
+```
+try 块退出时，会自动调用 `res.close()`
 ### 二、断言
 
 已知异常的捕获检查会降低程序运行速度，且大量的检查代码会最终保留在程序中，造成混乱。

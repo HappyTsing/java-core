@@ -557,6 +557,16 @@ Object 提供了一个 clone()方法，是浅拷贝！
 
 **简介**：lambda 表达式就是一段代码块，形式诸如`（参数类型1 参数名1，参数类型2 参数名2，...) -> { 表达式 }` 使用 lambda 表达式的主要目的是**延迟执行**。
 
+**使用场景**：将一个<u>代码块传递到某个对象</u>，该代码块会在将来某个时间调用。但是java中想要传递代码段并不容易，必须要构造一个对象，<u>该对象的类需要有一个方法包含所需的代码</u>。因此引入了lambda！
+
+延迟执行的原因有很多，例如：
+
+- 在一个单独的线程中运行代码
+- 多次运行代码
+- 在算法的适当位置运行代码（例如，排序中的比较操作）
+- 发生某种情况时执行代码（例如，点击了一个按钮，数据到达，等等）
+- 只在必要时才运行代码（例如，对象为空时才创建对象）
+
 **规则**：
 
 1. 没有参数，仍需要提供()，即`() -> { 表达式 }`
@@ -566,27 +576,97 @@ Object 提供了一个 clone()方法，是浅拷贝！
 
 无需指定返回类型，lambda 的返回类型总是会由上下文推到得出！
 
-**函数式接口**：**只有一个抽象方法的接口**，可以有其他非抽象方法，只要保证抽象方法只有一个即可！
+**函数式接口**：**只有一个抽象方法的接口**，可以有其他非抽象方法，只要保证抽象方法只有一个即可！当需要这种接口的对象时，可以提供一个lambda表达式。例如：Comparator接口。
 
-**lambda 表达式所能做的只是转化为函数式接口**，`java.util.function`中定义了许多通用的函数式接口，我们可以把一些 lambda 表达式保存在这些接口类型的变量中：
+**lambda 表达式所能做的只是转化为函数式接口**，`java.util.function`中定义了许多**通用**的函数式接口，例如`BiFunction<T, U, R>`，其描述了参数类型为T和U而且返回类型为R的函数，我们可以把一些 lambda 表达式保存在这些接口类型的变量中：
 
 ```java
 BiFunction<String,String,Integer> comp = (first,second) -> first.length() - second.length();
 ```
 
-不过这并没有什么意义，真正的作用如下：
-有一些类的方法的参数是函数式接口，如 ArrayList 类中的 removeIf 方法，其参数是`java.util.function`中的接口 Predicate，于是通过上述的原理，这个接口参数就是让我们传入一个 lambda 表达式的！
+不过这并没有什么意义，真正有意义的是类似Comparator这种具有特定用途的接口：
 
-```java
-//如果数组列表中存在null值，则删除！
-list.removeIf(e - > e==null);
-```
+- Comparator: 排序
+
+- Predicate: 该接口用于判断某个东西是否满足某种条件。ArrayList 类中的 removeIf 方法，其参数是`java.util.function`中的接口 Predicate，该接口专门用来传递lambda表达式，例如，下面的语句将从一个数组列表中删除所有null值：
+
+  ```java
+  //如果数组列表中存在null值，则删除！
+  list.removeIf(e - > e==null);
+  ```
+
+- Supplier: 供应者（supplier）没有参数，调用时会生成一个T类型的值。供应者用于实现**懒计算**。例如，考虑如下调用：
+
+  ```java
+  // LocalDate d = LocalDate.of(2022,11,1);
+  LocalDate d = null;
+  
+  // 方法一: 当预计d很少为null时，该方法并非最优解，我们希望只有在必要时才构造默认的LocalDate。
+  LocalDate day = Objects.requireNonNullElse(d,LocalDate.of(2022,11,2));
+  
+  // 方法二：使用Supplier实现懒计算，只有d为null时，才会调用供应者。
+  // public static <T> T requireNonNullElseGet(T obj, Supplier<? extends T> supplier)
+  LocalDate day = Objects.requireNonNullElseGet(d,()->LocalDate.of(2022,11,2));
+  ```
 
 **方法引用**
 
+使用`::`运算符分隔方法名与对象或类名，主要有三种情况：
+
+- `object::instanceMethod`：方法引用等价于向方法传递参数的lambda表达式，下述二者等价：
+
+  ```java
+  System.out::println
+  x -> System.out.println(x)
+  ```
+
+- `Class::instanceMethod`：第1个参数会成为方法的隐式参数，下述二者等价：
+
+  ```java
+  String::compareToIgnoreCase
+  (x,y) -> x.compareToIgnoreCase(y)
+  ```
+
+- `Class::staticMethod`：所有参数传递到静态方法，下述二者等价：
+
+  ```java
+  Math::pow
+  (x,y) -> Math.pow(x,y)
+  ```
+
+注意：只用当lambda表达式的体只调用一个方法而不做其他操作时，才能把lambda表达式重写为方法引用。
+
+例如：`s -> s.length() == 0`，这里存在方法调用，但还有一个比较，因此此处不能使用方法调用。
+
+如果有多个同名的重载方法，编译器就会尝试从上下文中找出你指的是哪一个方法。
+
+有时API包含一些专门用作方法引用的方法，例如Objects类有一个方法isNull，用于测试对象引用是否为null。乍看之下没啥用，因为测试`obj == null`的可读性远大于`Objects.isNull(obj)`。
+
+不过可以把方法引用传递到任何有Predicate参数的方法，下述二者等价：
+
+```java
+list.removeIf(Objects::isNull)
+list.removeIf(o -> o == null);
+```
+
+可以在方法中使用`this`参数，下述二者等价：
+
+```
+this::equals
+x -> this.equals(x)
+```
+
+同理，使用`super`也是合理的：`super::instanceMethod`
+
 **构造器引用**
 
-方法引用和构造器引用非常复杂，详见 Java 核心卷 Ⅰ P247
+构造器引用与方法引用类似，不过方法名为new，例如：`Person::new`
+
+参考代码：`CH06/lambda/ConstructorRefer`
+
+**处理lambda表达式**
+
+常用函数式接口：P253
 
 ### 三、内部类
 

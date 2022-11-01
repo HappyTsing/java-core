@@ -2,9 +2,7 @@ package coreI.CH06.lambda;
 
 import javax.swing.*;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.function.Predicate;
 
 
 /**
@@ -15,7 +13,6 @@ public class LambdaTest {
         var planets = new String[]{"Mercury", "Ven", "Earth"};
         System.out.println(Arrays.toString(planets));
 
-
         //第二个参数本来应该是实现了Comparator接口的实例，该接口只有一个抽象方法compare
         Arrays.sort(planets, (first, second) -> first.length() - second.length());
         System.out.println(Arrays.toString(planets));
@@ -25,8 +22,6 @@ public class LambdaTest {
         timer.start();
         JOptionPane.showMessageDialog(null, "quie?");
         System.exit(0);
-
-
 
     }
 }

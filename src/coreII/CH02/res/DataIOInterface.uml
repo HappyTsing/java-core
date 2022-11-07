@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>java.io.DataInputStream</OriginalElement>
+  <nodes>
+    <node x="35.75" y="97.0">java.io.DataInput</node>
+    <node x="156.25" y="-2.0">java.io.ObjectInput</node>
+    <node x="130.25" y="-77.66217967774537">java.io.ObjectInputStream</node>
+    <node x="-275.20199476782216" y="123.5">java.io.RandomAccessFile</node>
+    <node x="-99.25" y="324.66217967774537">java.io.DataOutputStream</node>
+    <node x="149.75" y="250.5">java.io.ObjectOutput</node>
+    <node x="28.75" y="153.0">java.io.DataOutput</node>
+    <node x="123.25" y="324.66217967774537">java.io.ObjectOutputStream</node>
+    <node x="-92.25" y="-77.66217967774537">java.io.DataInputStream</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="java.io.DataInputStream" target="java.io.DataInput" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="-5.25" y="59.0" />
+      <point x="78.75" y="59.0" />
+      <point x="78.75" y="79.5" />
+      <point x="79.5" y="79.5" />
+      <point x="-17.25" y="12.5" />
+    </edge>
+    <edge source="java.io.ObjectOutputStream" target="java.io.ObjectOutput" relationship="REALIZATION">
+      <point x="-1.25" y="-15.5" />
+      <point x="223.5" y="292.0" />
+      <point x="224.75" y="292.0" />
+      <point x="-0.0" y="14.0" />
+    </edge>
+    <edge source="java.io.DataOutputStream" target="java.io.DataOutput" relationship="REALIZATION">
+      <point x="-3.25" y="-14.5" />
+      <point x="-8.5" y="229.75" />
+      <point x="79.5" y="229.75" />
+      <point x="-17.25" y="17.5" />
+    </edge>
+    <edge source="java.io.ObjectOutput" target="java.io.DataOutput" relationship="INTERFACE_GENERALIZATION">
+      <point x="-0.0" y="-14.0" />
+      <point x="224.75" y="229.75" />
+      <point x="126.75" y="229.75" />
+      <point x="126.75" y="167.0" />
+      <point x="-68.0" y="-0.0" />
+    </edge>
+    <edge source="java.io.ObjectInput" target="java.io.DataInput" relationship="INTERFACE_GENERALIZATION">
+      <point x="1.75" y="13.0" />
+      <point x="226.5" y="65.75" />
+      <point x="111.75" y="65.75" />
+      <point x="15.0" y="14.0" />
+    </edge>
+    <edge source="java.io.ObjectInputStream" target="java.io.ObjectInput" relationship="REALIZATION">
+      <point x="94.5" y="-0.0" />
+      <point x="224.75" y="-63.66217967774537" />
+      <point x="-0.0" y="14.0" />
+    </edge>
+    <edge source="java.io.RandomAccessFile" target="java.io.DataOutput" relationship="REALIZATION">
+      <point x="95.75" y="0.0" />
+      <point x="-35.34647422557828" y="137.5" />
+      <point x="-35.34647422557828" y="168.1622510256258" />
+      <point x="-67.74686663892021" y="1.1622510256258067" />
+    </edge>
+    <edge source="java.io.RandomAccessFile" target="java.io.DataInput" relationship="REALIZATION">
+      <point x="95.0" y="0.0" />
+      <point x="-35.34647422557828" y="137.5" />
+      <point x="-35.34647422557828" y="111.0" />
+      <point x="-61.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.7712802546018178" showDependencies="false" x="226.27702598251983" y="150.77633628634288" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

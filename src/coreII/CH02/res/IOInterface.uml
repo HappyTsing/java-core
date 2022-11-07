@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>java.io.OutputStream</OriginalElement>
+  <nodes>
+    <node x="88.85467796858075" y="342.2706422728198">java.nio.CharBuffer</node>
+    <node x="88.85467796858075" y="-0.7081095393697581">java.lang.StringBuffer</node>
+    <node x="-382.0" y="229.28928454563976">java.io.Reader</node>
+    <node x="-407.5" y="-0.7081095393697581">java.io.OutputStream</node>
+    <node x="-392.0" y="133.0">java.io.Closeable</node>
+    <node x="93.35467796858075" y="133.0">java.lang.Appendable</node>
+    <node x="-390.0" y="335.89445208727295">java.lang.Readable</node>
+    <node x="-138.28261242694566" y="-0.7081095393697581">java.io.Flushable</node>
+    <node x="-125.28261242694566" y="133.0">java.io.Writer</node>
+    <node x="-626.9611830756419" y="133.0">java.io.InputStream</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="java.io.OutputStream" target="java.io.Flushable" relationship="REALIZATION">
+      <point x="0.0" y="14.0" />
+      <point x="-330.5" y="13.291890460630242" />
+      <point x="-143.56830467556927" y="13.291890460630242" />
+      <point x="-143.56830467556927" y="12.498469589247307" />
+      <point x="-16.095233693925024" y="-0.7934208713829349" />
+    </edge>
+    <edge source="java.io.OutputStream" target="java.io.Closeable" relationship="REALIZATION">
+      <point x="-2.0258918497202103" y="2.683210801816756" />
+      <point x="-332.5258918497202" y="161.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="java.io.Reader" target="java.lang.Readable" relationship="REALIZATION">
+      <point x="-1.8652343749181455E-4" y="14.0" />
+      <point x="-330.5001865234375" y="308.39464227281985" />
+      <point x="-330.5" y="308.39464227281985" />
+      <point x="0.0" y="-13.999809814453101" />
+    </edge>
+    <edge source="java.nio.CharBuffer" target="java.lang.Readable" relationship="REALIZATION">
+      <point x="4.3798828124863576E-4" y="-14.0" />
+      <point x="153.855115956862" y="349.89445208727295" />
+      <point x="-330.5" y="349.89445208727295" />
+      <point x="0.0" y="-13.999809814453101" />
+    </edge>
+    <edge source="java.io.InputStream" target="java.io.Closeable" relationship="REALIZATION">
+      <point x="-3.374023438027507E-4" y="14.0" />
+      <point x="-556.9615204779857" y="147.0" />
+      <point x="-330.5" y="147.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="java.io.Writer" target="java.io.Flushable" relationship="REALIZATION">
+      <point x="-3.8085937497100986E-5" y="-14.0" />
+      <point x="-77.78265051288315" y="71.0" />
+      <point x="-77.78294006366441" y="71.0" />
+      <point x="-3.276367187510232E-4" y="14.000281005859378" />
+    </edge>
+    <edge source="java.io.Reader" target="java.io.Closeable" relationship="REALIZATION">
+      <point x="-1.8652343749181455E-4" y="-14.0" />
+      <point x="-330.5001865234375" y="185.0" />
+      <point x="-330.5" y="185.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="java.lang.StringBuffer" target="java.lang.Appendable" relationship="REALIZATION">
+      <point x="-69.49956201171875" y="0.0" />
+      <point x="158.35467796858075" y="13.291890460630242" />
+      <point x="158.35467796858075" y="147.0" />
+      <point x="-69.49956201171875" y="0.0" />
+    </edge>
+    <edge source="java.nio.CharBuffer" target="java.lang.Appendable" relationship="REALIZATION">
+      <point x="-64.99956201171875" y="0.0" />
+      <point x="162.85467796858075" y="356.2706422728198" />
+      <point x="162.85467796858075" y="147.0" />
+      <point x="-69.49956201171875" y="0.0" />
+    </edge>
+    <edge source="java.io.Writer" target="java.io.Closeable" relationship="REALIZATION">
+      <point x="-45.634058886572916" y="1.316927189782433" />
+      <point x="-178.41163053223403" y="148.31692718978243" />
+      <point x="-178.41163053223403" y="148.19971648957136" />
+      <point x="61.83766192633084" y="1.1997164895713581" />
+    </edge>
+    <edge source="java.io.Writer" target="java.lang.Appendable" relationship="REALIZATION">
+      <point x="47.499961914062496" y="0.0" />
+      <point x="-69.49956201171875" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.8466126601767084" showDependencies="false" x="-178.486120982908" y="240.05210264976898" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

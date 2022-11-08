@@ -524,6 +524,16 @@ try(Resource res = ...)
 
 ## 操作文件
 
+输入/输出流关心的是文件的内容，此处操作文件的类（Files、Path）关注的是文件在磁盘上的存储和管理，例如重命名、移动、查询修改时间等。
+
+`java.nio.file.Files`和`java.nio.file.Path`在 Java 7 中新添加进来，比 JDK1.0  就引入的`java.io.File` 使用起来更加方便。
+
+**Path**
+
+
+
+**Files**
+
 ## 内存映射文件
 
 ## 文件加锁机制

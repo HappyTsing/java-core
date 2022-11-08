@@ -1,4 +1,4 @@
-package coreI.ToolsClass.Collections;
+package skill.toolClass.Collections;
 
 import java.util.ArrayList;
 import java.util.Collections;
